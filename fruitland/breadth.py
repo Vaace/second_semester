@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import random
 
 def Draw_Graph(deep_g):
 	elarge = [(u,v) for (u,v,d) in deep_g.edges(data=True) if d['weight'] >0.5]
@@ -17,7 +18,7 @@ def dfs(G, start, called):
 	called.add(start)
 	for neighbour in G[start]:
 		if neighbour not in called:
-			deep_g.add_edge(start,neighbour, weight=0.9)
+			deep_g.add_edge(start,neighbour, weight=1)
 			dfs(G, neighbour,called)
 
 
@@ -48,5 +49,5 @@ graph = nx.Graph(graph_raw)
 
 #_________Body of program__
 deep_g = nx.Graph()
-dfs(graph, '0', set())
+dfs(graph, str(random.randint(0,nodes)), set())
 Draw_Graph(deep_g)

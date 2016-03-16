@@ -13,13 +13,18 @@ def Draw_Graph(deep_g):
 	plt.axis('off')
 	plt.show()
 
-def dfs(G, start, called):
-	
-	called.add(start)
-	for neighbour in G[start]:
-		if neighbour not in called:
-			deep_g.add_edge(start,neighbour, weight=1)
-			dfs(G, neighbour,called)
+def bfs(G, start, fired=set()):
+	Q = [start]
+	bfs_result = nx.Graph()
+	fired.add(start)
+	while len(Q) != 0:
+		current = Q.pop(0)
+		for neighbour in G[current]:
+			if neighbour not in fired:
+				bfs_result.add_edge(current, neighbour, weight=1)
+				fired.add(neighbour)
+				Q.append(neighbour)
+	return bfs_result			
 
 
 
@@ -49,5 +54,4 @@ graph = nx.Graph(graph_raw)
 
 #_________Body of program__
 deep_g = nx.Graph()
-dfs(graph, str(random.randint(0,nodes)), set())
-Draw_Graph(deep_g)
+Draw_Graph(bfs(graph, str(random.randint(0,nodes))))

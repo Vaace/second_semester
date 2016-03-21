@@ -5,7 +5,7 @@ import random
 def Draw_Graph(deep_g):
 	elarge = [(u,v) for (u,v,d) in deep_g.edges(data=True) if d['weight'] >0.5]
 	esmall = [(u,v) for (u,v,d) in deep_g.edges(data=True) if d['weight'] <=0.5]
-	pos = nx.spectral_layout(deep_g) ####SPRING LAYOUT
+	pos = nx.spring_layout(deep_g)
 	nx.draw_networkx_nodes(deep_g,pos,node_size=600)
 	nx.draw_networkx_edges(deep_g, pos, edgelist = elarge, width=6)
 	nx.draw_networkx_edges(deep_g, pos, edgelist = esmall, width=6,alpha=0.5,edge_color='b',style='dashed')
@@ -13,13 +13,39 @@ def Draw_Graph(deep_g):
 	plt.axis('off')
 	plt.show()
 
-def dfs(G, start, called):
+def bfs(G, start, fired=set()):
+	Q = [start]
+	bfs_result = nx.Graph()
+	fired.add(start)
+	while len(Q) != 0:
+		current = Q.pop(0)
+		for neighbour in G[current]:
+			if neighbour not in fired:
+				bfs_result.add_edge(current, neighbour, weight=1)
+				fired.add(neighbour)
+				Q.append(neighbour)
+	connectivity_check = True
+	for vertex in G:
+		if vertex not in fired:
+			connectivity_check = False			
+	return bfs_result			
 	
-	called.add(start)
-	for neighbour in G[start]:
-		if neighbour not in called:
-			deep_g.add_edge(start,neighbour, weight=0.9)
-			dfs(G, neighbour,called)
+def connectivity(G, start, fired=set()):
+	Q = [start]
+	bfs_result = nx.Graph()
+	fired.add(start)
+	while len(Q) != 0:
+		current = Q.pop(0)
+		for neighbour in G[current]:
+			if neighbour not in fired:
+				bfs_result.add_edge(current, neighbour, weight=1)
+				fired.add(neighbour)
+				Q.append(neighbour)
+	connectivity_check = True
+	for vertex in G:
+		if vertex not in fired:
+			connectivity_check = False			
+	return connectivity_check			
 
 
 
@@ -49,9 +75,5 @@ graph = nx.Graph(graph_raw)
 
 #_________Body of program__
 deep_g = nx.Graph()
-dfs(graph, str(random.randint(0, nodes-1)), set())
-Draw_Graph(deep_g)
-
-
-
-
+print(connectivity(graph, str(random.randint(0, nodes))))
+Draw_Graph(bfs(graph, str(random.randint(0,nodes))))

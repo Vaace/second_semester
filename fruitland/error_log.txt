@@ -1,0 +1,14 @@
+True
+Traceback (most recent call last):
+  File "connectivity.py", line 79, in <module>
+    Draw_Graph(bfs(graph, str(random.randint(0,nodes))))
+  File "connectivity.py", line 22, in bfs
+    for neighbour in G[current]:
+  File "/usr/lib/python3/dist-packages/networkx/classes/graph.py", line 319, in __getitem__
+    return self.adj[n]
+KeyError: '5'
+
+
+------------------
+(program exited with code: 1)
+Press return to continue

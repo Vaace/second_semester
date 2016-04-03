@@ -45,7 +45,6 @@ def connectivity(G, start, fired=set()):
 	for vertex in G:
 		if vertex not in fired:
 			connectivity_check = False
-			Draw_Graph(bfs(G, str(vertex)))
 	return connectivity_check			
 
 
@@ -76,5 +75,8 @@ graph = nx.Graph(graph_raw)
 
 #_________Body of program__
 deep_g = nx.Graph()
-print(connectivity(graph, str(random.randint(0, nodes))))
-Draw_Graph(bfs(graph, str(random.randint(0,nodes))))
+if connectivity(graph, str(random.randint(0, nodes))) == False:
+    print('Graph is not connective')
+else:
+    print('Graph is connective')    
+Draw_Graph(graph)
